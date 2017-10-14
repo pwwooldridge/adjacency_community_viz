@@ -45,19 +45,21 @@ plot(axes = F,
      main = "Les Misérables Co-occurance Matrix"
 )
 
-cluster_cols <- rainbow(n_cluster)
+cluster_cols <- categorical_pal(n_cluster)
 
 lapply(1:nrow(adj_mat), function(i) {
-  lapply(1:ncol(adj_mat), function(j) {
-    rect(
-      xleft = i - .5, 
-      xright = i + .5, 
-      ytop = j + .5, 
-      ybottom = j - .5, 
-      pch = '+', 
-      cex = .5, 
-      col=ifelse(adj_mat[i,j]==0, 'black', min(cluster_cols[sort(members)[j]], cluster_cols[sort(members)[i]]))
-      )})
+    lapply(1:ncol(adj_mat), function(j) {
+        # each entry in matrix is an edge so if communities differ pick the smallest
+        cluster_no <- min(sort(members)[j], sort(members)[i])
+        rect(
+            xleft = i - .5, 
+            xright = i + .5, 
+            ytop = j + .5, 
+            ybottom = j - .5, 
+            pch = '+', 
+            cex = .5, 
+            col=ifelse(adj_mat[i,j]==0, 'black', cluster_cols[cluster_no])
+        )})
 })
 
 axis(tick=T, side = 1, labels = colnames(adj_mat), at = 1:nrow(adj_mat),
