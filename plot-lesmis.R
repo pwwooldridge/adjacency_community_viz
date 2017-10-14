@@ -3,7 +3,6 @@ library(igraph) # to make a symmetric matrix
 
 # read les mis json data
 json_data <- fromJSON("https://bost.ocks.org/mike/miserables/miserables.json")
-#load("json_data.rda")
 
 characters <- json_data[[1]]$name
 edges <- json_data[[2]]
